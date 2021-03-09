@@ -1,0 +1,36 @@
+.main-navigation {
+  .main-navigation-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+
+  .nav-item {
+    margin-right: 15px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .nav-item-link {
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 24px;
+    cursor: pointer;
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+    padding: 9px 12px;
+
+    &:hover {
+      border-bottom: 2px solid #ffffff;
+    }
+
+    &.is-active{
+      border-bottom: 2px solid #ffffff;
+    }
+  }
+}

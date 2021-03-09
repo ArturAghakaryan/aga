@@ -1,0 +1,14 @@
+.app-admin-dashboard {
+  min-width: 100%;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1d2126;
+  border-radius: 3px;
+
+  h2{
+      color: #fff;
+      font-size: 48px;
+  }
+}

@@ -1,0 +1,14 @@
+.is-admin{
+    color: #b2b9bf;
+    background: #323743;
+}
+
+.app-admin-content-main{
+    padding-top: 70px;
+    .app-admin-content-main-inner{
+        padding: 20px;
+        margin-left: 240px;
+        height: calc(100vh - 70px);
+        overflow-y: auto;
+    }
+}

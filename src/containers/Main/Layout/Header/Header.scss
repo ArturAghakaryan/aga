@@ -1,0 +1,18 @@
+.hedaer-main {
+  z-index: 1000;
+  background: #111418;
+
+  &.is-sticky {
+    position: fixed;
+    top: 0;
+    background: transparent;
+    width: 100%;
+  }
+
+  .header-main-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+  }
+}

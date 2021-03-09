@@ -1,0 +1,106 @@
+.app-admin-sidebar {
+  height: calc(100vh - 70px);
+  width: 240px;
+  background: #1d2126;
+  position: fixed;
+    left: 0;
+    z-index: 1;
+
+  &__user {
+    height: 158px;
+    background: rgba(255, 255, 255, 0.7);
+  }
+  &__nav {
+    padding: 15px;
+
+    &-item {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    &-link {
+      padding: 8px 35px 8px 8px;
+      display: flex;
+      border-radius: 4px;
+      white-space: nowrap;
+      align-items: center;
+      position: relative;
+      line-height: 25px;
+      font-size: 15px;
+      width: 100%;
+      background: transparent;
+      border: 0;
+      color: #fff;
+      transition: all 0.2s ease;
+
+      .icon-arrow-forward {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: rotate(0deg) translateY(-50%);
+        width: 15px;
+        height: 20px;
+
+        & > svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .icon-nav {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+
+        & > svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .nav-link-title {
+        font-size: 16px;
+        line-height: 17px;
+      }
+
+      &.is-active {
+        background-color: #343a40;
+        color: #fff;
+        .icon-arrow-forward {
+          transform: rotate(90deg) translate(-50%, 0);
+        }
+      }
+    }
+
+    .first-level {
+      overflow: hidden;
+      transition: height 0.3s ease; 
+      height: 0;
+      padding: 10px 0 0 5px;
+
+      &.collapsed {
+        height: auto;
+      }
+
+      .app-admin-sidebar__nav-item {
+        margin-bottom: 0;
+      }
+
+      .app-admin-sidebar__nav-link {
+        padding: 10px 35px 10px 32px;
+        display: flex;
+        border-radius: 4px;
+        white-space: nowrap;
+        align-items: center;
+        position: relative;
+        line-height: 25px;
+        font-size: 15px;
+
+        &.is-active {
+          background: transparent;
+          color: #fff;
+        }
+      }
+    }
+  }
+}

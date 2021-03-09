@@ -1,0 +1,56 @@
+
+.btn {
+  color: #000;
+  background: #fff;
+  cursor: pointer;
+  padding: 7px 18px;
+  font-size: 15px;
+  line-height: 22px;
+  border-radius: 3px;
+  border: 2px solid;
+  transition: all 0.3s;
+
+  &.is-primary{
+    background: #000000;
+    color: #ffffff;
+    border-color: #000000;
+
+    &:hover{
+      background: #ffffff;
+      color: #000000;
+    }
+  }
+
+  &.is-secondary{
+    background: #ffffff;
+    color: #000000;
+    border-color: #000000;
+
+    &:hover{
+      background: #000000;
+      color: #ffffff;
+    }
+  }
+
+  &.is-icon-right{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & > svg{
+      font-size: 20px;
+      margin-right: 5px;
+    }
+
+  }
+
+  &.is-icon-left{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & > svg{
+      font-size: 20px;
+      margin-left: 5px;
+    }
+
+  }
+}

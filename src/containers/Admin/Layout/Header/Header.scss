@@ -1,0 +1,56 @@
+.app-admin-header-main {
+  background: #1d2126;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px 10px 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  left: 0;
+  z-index: 1;
+
+  .app-admin-header-logo-main {
+    width: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+
+    &-link {
+      display: inline-block;
+    }
+    &-img {
+      height: 50px;
+    }
+  }
+}
+
+.logout-modal {
+  .modal__header {
+    text-align: center;
+    padding: 20px;
+  }
+  .modal__content {
+    height: auto;
+  }
+  .modal__body {
+    text-align: center;
+    font-size: 22px;
+  }
+  .modal__footer {
+    justify-content: center;
+
+    .is-primary {
+      background: #dc004e;
+      color: #ffffff;
+      border-color: #dc004e;
+
+      &:hover {
+        background: #ffffff;
+        color: #dc004e;
+      }
+    }
+  }
+}
