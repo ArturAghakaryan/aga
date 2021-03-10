@@ -8,6 +8,7 @@ import Button from "components/Button/Button";
 import fbService from "api/fbService";
 import { AppContext } from "context/AppContext";
 import contextTypes from "context/contextTypes";
+import validate from 'utils/validate'
 
 const Login = () => {
   const context = useContext(AppContext);
@@ -43,19 +44,29 @@ const Login = () => {
   };
 
   const handleLogin = async () => {
-    try {
-      setLoading(true);
-      const user = await fbService.login(credentials);
-      console.log(user);
-      context.dispache({ type: contextTypes.SET_USER, payload: { user } });
-    } catch (err) {
+    let errors = validate(credentials);
+    if (!errors) {
+      try {
+        setLoading(true);
+        const user = await fbService.login(credentials);
+        console.log(user);
+        context.dispache({ type: contextTypes.SET_USER, payload: { user } });
+      } catch (err) {
+        setErrorState({
+          ...errorState,
+          emailError: err.code === "auth/invalid-email" ? err.message : "",
+          passwordError: err.code === "auth/wrong-password" ? err.message : "",
+        });
+      } finally {
+        setLoading(false);
+      }
+    } else {
+     
       setErrorState({
         ...errorState,
-        emailError: err.code === "auth/invalid-email" ? err.message : "",
-        passwordError: err.code === "auth/wrong-password" ? err.message : "",
+        emailError: errors.email  ? errors.email.message : "",
+        passwordError: errors.password  ? errors.password.message : "",
       });
-    } finally {
-      setLoading(false);
     }
   };
 
