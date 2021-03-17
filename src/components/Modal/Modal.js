@@ -1,63 +1,31 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Modal as MaterialModal } from "@material-ui/core";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+
 import Button from "components/Button/Button";
 
 import "./Modal.scss";
 
 export class Modal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isModalOpen: false,
-      modalTitle: props.modalTitle ? props.modalTitle : null,
-      className: props.className ? props.className : "",
-      modalFunction: props.modalFunction ? props.modalFunction : null,
-      functionButtonTitle: props.functionButtonTitle
-        ? props.functionButtonTitle
-        : null,
-      functionButtonDisabled: props.functionButtonDisabled
-        ? props.functionButtonDisabled
-        : false,
-      showTopCloseButton: props.showTopCloseButton !== false ? true : null,
-      showBottomCloseButonn:
-        props.showBottomCloseButonn !== false ? true : null,
-      showBottomCloseButonnTitle: props.showBottomCloseButonnTitle
-        ? props.showBottomCloseButonnTitle
-        : "Close",
-    };
-  }
-
-  openModal = () => {
-    this.setState({
-      isModalOpen: true,
-    });
-  };
-
-  closeModal = () => {
-    this.setState({
-      isModalOpen: false,
-    });
-  };
-  s;
-
   render() {
     const {
-      isModalOpen,
+      isOpen,
       modalTitle,
       className,
-      modalFunction,
-      functionButtonTitle,
-      functionButtonDisabled,
+      action,
+      actionButtonTitle,
+      actionButtonDisabled,
+      onClose,
       showTopCloseButton,
       showBottomCloseButonn,
-      showBottomCloseButonnTitle,
-    } = this.state;
-    
+      bottomCloseButonnTitle,
+    } = this.props;
+
     return (
       <MaterialModal
-        open={isModalOpen}
-        onClose={this.closeModal}
+        open={isOpen}
+        onClose={onClose}
         className={`modal ${className}`}
       >
         <div className="modal__content">
@@ -65,7 +33,7 @@ export class Modal extends Component {
             {modalTitle ? <span>{modalTitle}</span> : ""}
 
             {showTopCloseButton && (
-              <Button className="modal__close-btn" onClick={this.closeModal}>
+              <Button className="modal__close-btn" onClick={onClose}>
                 <HighlightOffIcon />
               </Button>
             )}
@@ -73,17 +41,17 @@ export class Modal extends Component {
           <div className="modal__body">{this.props.children}</div>
           <div className="modal__footer">
             {showBottomCloseButonn && (
-              <Button className="is-secondary" onClick={this.closeModal}>
-                {showBottomCloseButonnTitle}
+              <Button className="is-secondary" onClick={onClose}>
+                {bottomCloseButonnTitle}
               </Button>
             )}
-            {modalFunction && (
+            {action && (
               <Button
                 className="is-primary"
-                onClick={modalFunction}
-                loading={functionButtonDisabled}
+                onClick={action}
+                loading={actionButtonDisabled}
               >
-                {functionButtonTitle}
+                {actionButtonTitle}
               </Button>
             )}
           </div>
@@ -92,5 +60,30 @@ export class Modal extends Component {
     );
   }
 }
+
+Modal.defaultProps = {
+  isOpen: false,
+  modalTitle: null,
+  className: "",
+  action: null,
+  actionButtonTitle: null,
+  actionButtonDisabled: false,
+  showTopCloseButton: true,
+  showBottomCloseButonn: true,
+  bottomCloseButonnTitle: "Close",
+};
+
+Modal.propTypes = {
+  isOpen: PropTypes.bool,
+  modalTitle: PropTypes.string,
+  className: PropTypes.string,
+  action: PropTypes.func,
+  actionButtonTitle: PropTypes.string,
+  actionButtonDisabled: PropTypes.bool,
+  onClose: PropTypes.func,
+  showTopCloseButton: PropTypes.bool,
+  showBottomCloseButonn: PropTypes.bool,
+  bottomCloseButonnTitle: PropTypes.string,
+};
 
 export default Modal;

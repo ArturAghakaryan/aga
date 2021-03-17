@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { connect } from "react-redux"
 
 import "./Login.scss";
 
@@ -6,12 +8,14 @@ import logoLink from "assests/logo/logo.svg";
 import Field from "components/Field/Field";
 import Button from "components/Button/Button";
 import fbService from "api/fbService";
-import { AppContext } from "context/AppContext";
-import contextTypes from "context/contextTypes";
-import validate from 'utils/validate'
+// import { AppContext } from "context/AppContext";
+// import contextTypes from "context/contextTypes";
+import validate from "utils/validate";
+import { reduxActionTypes } from "reducers/reduxActionTypes";
 
-const Login = () => {
-  const context = useContext(AppContext);
+const Login = (props) => {
+  // const context = useContext(AppContext);
+  const history = useHistory();
   const [loading, setLoading] = useState(false);
 
   const [credentials, setCredentials] = useState({
@@ -49,8 +53,10 @@ const Login = () => {
       try {
         setLoading(true);
         const user = await fbService.login(credentials);
-        console.log(user);
-        context.dispache({ type: contextTypes.SET_USER, payload: { user } });
+        // context.dispache({ type: contextTypes.SET_USER, payload: { user } });
+        props.setReduxUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
+        await history.push("/admin");
       } catch (err) {
         setErrorState({
           ...errorState,
@@ -61,11 +67,10 @@ const Login = () => {
         setLoading(false);
       }
     } else {
-     
       setErrorState({
         ...errorState,
-        emailError: errors.email  ? errors.email.message : "",
-        passwordError: errors.password  ? errors.password.message : "",
+        emailError: errors.email ? errors.email.message : "",
+        passwordError: errors.password ? errors.password.message : "",
       });
     }
   };
@@ -122,4 +127,17 @@ const Login = () => {
   );
 };
 
-export default Login;
+// const mapStateToProps = (state) => ({
+//   user: state.user
+// })
+
+const mapDispacheToProps = {
+  setReduxUser: (user) => ({
+    type: reduxActionTypes.SET_USER,
+    payload: {
+      user,
+    }
+  })
+}
+
+export default connect(null, mapDispacheToProps)(Login);

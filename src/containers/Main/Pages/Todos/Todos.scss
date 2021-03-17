@@ -1,5 +1,6 @@
 .tudos-inner {
     margin: 20px 0;
+    min-height: calc(100vh - 80px);
     .posts-settings-buttons {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));

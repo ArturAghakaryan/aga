@@ -15,7 +15,7 @@ class FbService {
     const res = await firebase.database().ref("posts").get();
     const data = res.toJSON();
 
-    return Object.values(data);
+    return data ? Object.values(data) : [];
   };
 
   getPosts = async (startAt, endAt) => {
@@ -29,7 +29,7 @@ class FbService {
 
     const data = res.toJSON();
 
-    return Object.values(data);
+    return data ? Object.values(data) : [];
   };
 
   getPost = async (id) => {
@@ -37,9 +37,42 @@ class FbService {
     return res.val();
   };
 
-  editePost = async (postData) => {
+  createPost = async (postData) => {
+    const res = await firebase
+      .database()
+      .ref("posts")
+      .orderByKey()
+      .limitToLast(1)
+      .get();
+
+    const lastItemJSON = res.toJSON();
+    if (lastItemJSON) {
+      const lastItem = Object.values(lastItemJSON)[0];
+      console.log(lastItem);
+      var { id } = lastItem;
+    } else {
+      var id = 0;
+    }
+
+    const newItem = {
+      ...postData,
+      id: id + 1,
+    };
+    await firebase
+      .database()
+      .ref(`posts/${id + 1}`)
+      .set(newItem);
+
+    return newItem;
+  };
+
+  editePost = async (postData, title, body) => {
     const postRef = firebase.database().ref(`posts/${postData.id}`);
-    await postRef.update(postData);
+    await postRef.update({
+      ...postData,
+      title: title,
+      body: body,
+    });
     const res = await postRef.get();
     return res.val();
   };
@@ -49,14 +82,12 @@ class FbService {
     await postRef.remove();
 
     const posts = await this.getAllPosts();
-    await firebase
-      .database()
-      .ref("posts")
-      .set(
-        posts.map((el, index) => {
-          return { ...el, id: index };
-        })
-      );
+    const newPosts = {};
+    Object.values(posts).forEach(
+      (value, index) => (newPosts[index + 1] = { ...value, id: index + 1 })
+    );
+
+    await firebase.database().ref("posts").set(newPosts);
 
     const data = await this.getPosts(startAt, endAt);
     return data;
@@ -74,6 +105,10 @@ class FbService {
     const res = await firebase
       .auth()
       .createUserWithEmailAndPassword(credentials.email, credentials.password);
+  };
+
+  logout = async () => {
+    await firebase.auth().signOut();
   };
 }
 

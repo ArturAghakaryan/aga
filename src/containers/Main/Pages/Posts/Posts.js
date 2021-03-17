@@ -1,18 +1,20 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import Button from "components/Button/Button";
 import Box from "components/Box/Box";
+import { reduxActionTypes } from "reducers/reduxActionTypes";
 import fbService from "api/fbService";
 
 import "./Posts.scss";
 
-const endAt = 8;
+const endAt = 9;
 
 export class Posts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      posts: null,
+      // posts: null,
       startAt: 0,
       hesMore: false,
       loading: false,
@@ -20,12 +22,26 @@ export class Posts extends Component {
   }
 
   componentDidMount() {
-    fbService.getPosts(this.state.startAt, endAt).then((data) => {
-      this.setState({
-        posts: data,
-        hesMore: data.length <= endAt ? false : true,
+    // fbService.getPosts(this.state.startAt, endAt).then((data) => {
+    //   this.setState({
+    //     posts: data,
+    //     hesMore: data.length <= endAt ? false : true,
+    //   });
+    // });
+    if (!this.props.posts) {
+      fbService.getPosts(this.state.startAt, endAt).then((data) => {
+        console.log(data);
+        this.props.setReduxPosts(data)
+        this.props.setReduxPostsTotalItems(endAt)
+        this.setState({
+          hesMore: data.length < endAt ? false : true,
+        });
       });
-    });
+    } else {
+      this.setState({
+        hesMore: this.props.posts.length < this.props.postsTotalItems ? false : true,
+      });
+    }
   }
 
   getMore = () => {
@@ -35,12 +51,14 @@ export class Posts extends Component {
     this.setState({
       startAt: newStartAt,
       loading: true,
-      totalItem: newEndAt,
     });
 
+    this.props.setReduxPostsTotalItems(newEndAt)
+
     fbService.getPosts(newStartAt, newEndAt).then((data) => {
+      this.props.getReduxMorePosts(data)
       this.setState({
-        posts: [...this.state.posts, ...data],
+        // posts: [...this.state.posts, ...data],
         hesMore: data.length <= endAt ? false : true,
         loading: false,
       });
@@ -48,7 +66,9 @@ export class Posts extends Component {
   };
 
   render() {
-    const { loading, hesMore, posts, switcherOpen, showButtons } = this.state;
+    console.log(this.props);
+    const { loading, hesMore } = this.state;
+    const { posts } = this.props
     if (!posts) {
       return (
         <div className="container">
@@ -105,4 +125,34 @@ export class Posts extends Component {
   }
 }
 
-export default Posts;
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    posts: state.posts,
+    postsTotalItems: state.postsTotalItems
+  }
+}
+
+const mapDispacheToProps = {
+
+  setReduxPosts: (posts) => ({
+    type: reduxActionTypes.SET_POSTS,
+    payload: {
+      posts,
+    }
+  }),
+  setReduxPostsTotalItems: (postsTotalItems) => ({
+    type: reduxActionTypes.SET_POSTS_TOTOAL_ITEMS_COUNT,
+    payload: {
+      postsTotalItems,
+    }
+  }),
+  getReduxMorePosts: (posts) => ({
+    type: reduxActionTypes.GET_MORE_POSTS,
+    payload: {
+      posts,
+    }
+  }),
+}
+
+export default connect(mapStateToProps, mapDispacheToProps)(Posts);

@@ -33,6 +33,18 @@
   &__table {
     padding: 0 20px 20px;
 
+    .dark-table__header{
+      &-number{
+        width: 60px;
+      }
+      &-name{
+        width: 30%;
+      }
+      &-action{
+        width: 80px;
+      }
+    }
+
     .table-buttons{
       display: flex;
       align-items: center;

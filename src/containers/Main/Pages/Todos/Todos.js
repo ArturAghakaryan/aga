@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import service from "api/service";
 import Button from "components/Button/Button";
 import Box from "components/Box/Box";
 
@@ -10,35 +9,18 @@ const limit = 8;
 
 export class Todos extends Component {
   state = {
-    data: null,
     start: 0,
     hesMore: true,
     loading: false,
+    data: [],
   };
 
   componentDidMount() {
-    service.getTodos(this.state.start, limit).then((data) => {
-      this.setState({
-        data: data,
-      });
-    });
+
   }
 
   getMore = () => {
-    const newstart = this.state.start + limit;
 
-    this.setState({
-      start: newstart,
-      loading: true,
-    });
-
-    service.getTodos(newstart, limit).then((data) => {
-      this.setState({
-        data: [...this.state.data, ...data],
-        hesMore: data.length < limit ? false : true,
-        loading: false,
-      });
-    });
   };
 
   render() {
@@ -51,6 +33,7 @@ export class Todos extends Component {
         </div>
       );
     }
+
     if (data.length === 0) {
       return (
         <div className="container">
