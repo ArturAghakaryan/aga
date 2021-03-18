@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 
 import Button from "components/Button/Button";
 import Box from "components/Box/Box";
-import { reduxActionTypes } from "reducers/reduxActionTypes";
 import fbService from "api/fbService";
+
+import { setReduxPosts, setReduxPostsHesMore, setReduxPostsStartAt, getReduxMorePosts } from 'actions/postsActions'
 
 import "./Posts.scss";
 
@@ -14,61 +15,43 @@ export class Posts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // posts: null,
-      startAt: 0,
-      hesMore: false,
       loading: false,
     };
   }
 
   componentDidMount() {
-    // fbService.getPosts(this.state.startAt, endAt).then((data) => {
-    //   this.setState({
-    //     posts: data,
-    //     hesMore: data.length <= endAt ? false : true,
-    //   });
-    // });
     if (!this.props.posts) {
-      fbService.getPosts(this.state.startAt, endAt).then((data) => {
-        console.log(data);
+      fbService.postsService.getPosts(this.props.startAt, endAt).then((data) => {
         this.props.setReduxPosts(data)
-        this.props.setReduxPostsTotalItems(endAt)
-        this.setState({
-          hesMore: data.length < endAt ? false : true,
-        });
-      });
-    } else {
-      this.setState({
-        hesMore: this.props.posts.length < this.props.postsTotalItems ? false : true,
       });
     }
+    fbService.postsService.getAllPosts().then((data) => {
+      this.props.setReduxPostsHesMore(data.length > this.props.posts.length ? true : false)
+    });
   }
 
   getMore = () => {
-    const newStartAt = this.state.startAt + endAt + 1;
-    const newEndAt = newStartAt + endAt;
+    const newStartAt = this.props.startAt + endAt;
+    const newEndAt = newStartAt + endAt - 1;
 
     this.setState({
-      startAt: newStartAt,
       loading: true,
     });
 
-    this.props.setReduxPostsTotalItems(newEndAt)
+    this.props.setReduxPostsStartAt(newStartAt)
 
-    fbService.getPosts(newStartAt, newEndAt).then((data) => {
+    fbService.postsService.getPosts(newStartAt, newEndAt).then((data) => {
       this.props.getReduxMorePosts(data)
+      this.props.setReduxPostsHesMore(data.length < endAt ? false : true)
       this.setState({
-        // posts: [...this.state.posts, ...data],
-        hesMore: data.length <= endAt ? false : true,
         loading: false,
       });
     });
   };
 
   render() {
-    console.log(this.props);
-    const { loading, hesMore } = this.state;
-    const { posts } = this.props
+    const { loading } = this.state;
+    const { posts, hesMore } = this.props
     if (!posts) {
       return (
         <div className="container">
@@ -126,33 +109,19 @@ export class Posts extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
-    posts: state.posts,
-    postsTotalItems: state.postsTotalItems
+    posts: state.posts.data,
+    postsTotalItems: state.posts.dataTotalItems,
+    hesMore: state.posts.hesMore,
+    startAt: state.posts.startAt
   }
 }
 
 const mapDispacheToProps = {
-
-  setReduxPosts: (posts) => ({
-    type: reduxActionTypes.SET_POSTS,
-    payload: {
-      posts,
-    }
-  }),
-  setReduxPostsTotalItems: (postsTotalItems) => ({
-    type: reduxActionTypes.SET_POSTS_TOTOAL_ITEMS_COUNT,
-    payload: {
-      postsTotalItems,
-    }
-  }),
-  getReduxMorePosts: (posts) => ({
-    type: reduxActionTypes.GET_MORE_POSTS,
-    payload: {
-      posts,
-    }
-  }),
+  setReduxPosts,
+  setReduxPostsStartAt,
+  setReduxPostsHesMore,
+  getReduxMorePosts,
 }
 
 export default connect(mapStateToProps, mapDispacheToProps)(Posts);

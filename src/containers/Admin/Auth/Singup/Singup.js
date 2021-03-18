@@ -35,7 +35,7 @@ const Singup = forwardRef((props, ref) => {
   const handleSingup = async () => {
     try {
       setLoading(true);
-      const user = await fbService.singup(credentials);
+      const user = await fbService.userService.singup(credentials);
       setErrorState({
         ...errorState,
         error: false,

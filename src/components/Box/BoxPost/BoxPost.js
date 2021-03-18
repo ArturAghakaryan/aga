@@ -9,7 +9,7 @@ const BoxPost = ({data , className}) => {
         <div className={`box box-post ${className}`}>
             <h3 className="box__title">{data.title}</h3>
             <p className="box__desc">{data.body}
-            <Link to={`posts/${data.id}`}> <strong>Reade more...</strong></Link>
+            <Link to={`posts/${data.id}`}> reade more...</Link>
             </p>
         </div>
     )

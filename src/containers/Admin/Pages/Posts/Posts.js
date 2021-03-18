@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { connect } from "react-redux"
 
@@ -7,7 +7,7 @@ import PostList from "./PostList/PostList";
 import PostModal from "components/PostModal/PostModal";
 import fbService from "api/fbService";
 
-import { reduxActionTypes } from "reducers/reduxActionTypes";
+import { crateReduxPosts, setReduxPostsHesMore } from "actions/postsActions";
 
 import "./Posts.scss";
 
@@ -33,17 +33,22 @@ const Posts = (props) => {
   };
 
   const createPost = async () => {
-    fbService
+    fbService.postsService
       .createPost({
         title: postsConfig.titleValue,
         body: postsConfig.descValue,
       })
       .then((data) => {
-        if (props.posts.length < 8) {
+        if (props.posts.length < props.endAt) {
           props.crateReduxPosts(data)
         }
         toast.success(`Post create`);
       });
+
+    await fbService.postsService.getAllPosts().then((data) => {
+      props.setReduxPostsHesMore(data.length >= props.endAt ? true : false)
+    });
+
     setPostsConfig({
       ...postsConfig,
       isopenCrateModal: false,
@@ -88,17 +93,14 @@ const Posts = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    posts: state.posts
+    posts: state.posts.data,
+    endAt: state.posts.endAt
   }
 }
 
 const mapDispacheToProps = {
-  crateReduxPosts: (posts) => ({
-    type: reduxActionTypes.CRATE_POST,
-    payload: {
-      posts,
-    }
-  })
+  crateReduxPosts,
+  setReduxPostsHesMore
 }
 
 export default connect(mapStateToProps, mapDispacheToProps)(Posts);

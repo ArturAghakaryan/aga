@@ -21,16 +21,15 @@ import Users from "containers/Admin/Pages/Users/Users";
 
 
 const AppRoutes = (props) => {
-  // const context = useContext(AppContext);
-
+  const logdin = props.user
   return (
     <>
       <Switch>
         <Route
           exact
           path={["/admin", "/admin/posts", "/admin/users"]}
-          render={() =>
-            props.user ? (
+          render={(props) =>
+            logdin ? (
               <Admin {...props}>
                 <Switch>
                   <Route exact path="/admin" component={Dashboard} />
@@ -59,8 +58,10 @@ const AppRoutes = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  user: state.user
-})
+const mapStateToProps = (state) => {
+  return {
+    user: state.user.data
+  }
+}
 
 export default connect(mapStateToProps)(AppRoutes);

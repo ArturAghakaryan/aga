@@ -1,20 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux"
-
-import "./Login.scss";
 
 import logoLink from "assests/logo/logo.svg";
 import Field from "components/Field/Field";
 import Button from "components/Button/Button";
 import fbService from "api/fbService";
-// import { AppContext } from "context/AppContext";
-// import contextTypes from "context/contextTypes";
 import validate from "utils/validate";
-import { reduxActionTypes } from "reducers/reduxActionTypes";
+import { setReduxUser } from "actions/userActions";
+
+import "./Login.scss";
 
 const Login = (props) => {
-  // const context = useContext(AppContext);
   const history = useHistory();
   const [loading, setLoading] = useState(false);
 
@@ -52,8 +49,7 @@ const Login = (props) => {
     if (!errors) {
       try {
         setLoading(true);
-        const user = await fbService.login(credentials);
-        // context.dispache({ type: contextTypes.SET_USER, payload: { user } });
+        const user = await fbService.userService.login(credentials);
         props.setReduxUser(user);
         localStorage.setItem("user", JSON.stringify(user));
         await history.push("/admin");
@@ -127,17 +123,8 @@ const Login = (props) => {
   );
 };
 
-// const mapStateToProps = (state) => ({
-//   user: state.user
-// })
-
 const mapDispacheToProps = {
-  setReduxUser: (user) => ({
-    type: reduxActionTypes.SET_USER,
-    payload: {
-      user,
-    }
-  })
+  setReduxUser
 }
 
 export default connect(null, mapDispacheToProps)(Login);

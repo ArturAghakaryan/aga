@@ -5,15 +5,11 @@ import Logo from "./Logo/Logo";
 import Button from "components/Button/Button";
 import Modal from "components/Modal/Modal";
 import fbService from "api/fbService";
-// import { AppContext } from "context/AppContext";
-// import contextTypes from "context/contextTypes";
-import { reduxActionTypes } from "reducers/reduxActionTypes";
+import { removeReduxUser } from "actions/userActions";
 
 import "./Header.scss";
 
 const Header = (props) => {
-  // const logoutModal = useRef();
-  // const context = useContext(AppContext);
   const [headerConfig, setHeaderConfig] = useState({
     isOpenLogoutModal: false,
   });
@@ -27,7 +23,6 @@ const Header = (props) => {
 
   const logout = async () => {
     await fbService.logout();
-    // context.dispache({ type: contextTypes.REMOVE_USER });
     props.removeReduxUser()
     localStorage.removeItem('user')
   };
@@ -56,9 +51,7 @@ const Header = (props) => {
 };
 
 const mapDispacheToProps = {
-  removeReduxUser: () => ({
-    type: reduxActionTypes.REMOVE_USER,
-  })
+  removeReduxUser
 }
 
 export default connect(null, mapDispacheToProps)(Header);

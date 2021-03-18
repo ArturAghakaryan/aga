@@ -12,16 +12,15 @@ import Modal from "components/Modal/Modal";
 import PostModal from "components/PostModal/PostModal";
 import Link from "components/Link/Link";
 
-import { reduxActionTypes } from "reducers/reduxActionTypes";
+import { setReduxPosts, setReduxPostsHesMore, setReduxPostsStartAt, setReduxPostsEndAt, getReduxMorePosts } from 'actions/postsActions'
 
 import "./PostList.scss";
 
-const endAt = 8;
+const endAt = 2;
 
 const PostList = (props) => {
   const [postsConfig, setPostsConfig] = useState({
-    startAt: 0,
-    hasMore: false,
+    startAt: props.startAt,
     loading: false,
     totalItem: endAt,
     postId: null,
@@ -33,43 +32,28 @@ const PostList = (props) => {
 
   useEffect(() => {
     if (!props.posts) {
-      fbService.getPosts(postsConfig.startAt, endAt).then((data) => {
+      fbService.postsService.getPosts(postsConfig.startAt, endAt).then((data) => {
         props.setReduxPosts(data)
-        setPostsConfig({
-          ...postsConfig,
-          hesMore: data.length < postsConfig.totalItem ? false : true,
-        });
-      });
-    } else {
-      setPostsConfig({
-        ...postsConfig,
-        hesMore: props.posts.length < postsConfig.totalItem ? false : true,
+        props.setReduxPostsEndAt(endAt)
       });
     }
-
-
+    fbService.postsService.getAllPosts().then((data) => {
+      props.setReduxPostsHesMore(data.length > ((props.posts && props.posts.length) || endAt) ? true : false)
+    });
   }, []);
-
-  // useEffect(() => {
-  //   if (props.posts) {
-  //     setPostsConfig({
-  //       ...postsConfig,
-  //       hesMore: props.posts.length < postsConfig.totalItem ? false : true,
-  //     });
-  //   }
-  // },[props.posts]);
 
 
   useEffect(() => {
     if (postsConfig.isOpenEditeModal && postsConfig.postId) {
-      fbService.getPost(postsConfig.postId).then((data) => {
-
-        setPostsConfig({
-          ...postsConfig,
-          titleValue: data.title,
-          descValue: data.body,
-        });
-      });
+      props.posts.filter((el) => {
+        if (el.id === postsConfig.postId) {
+          setPostsConfig({
+            ...postsConfig,
+            titleValue: el.title,
+            descValue: el.body,
+          });
+        }
+      })
     }
   }, [postsConfig.isOpenEditeModal]);
 
@@ -96,7 +80,7 @@ const PostList = (props) => {
       }
     });
 
-    const res = await fbService.editePost(
+    const res = await fbService.postsService.editePost(
       postaDatan[0],
       postsConfig.titleValue,
       postsConfig.descValue
@@ -109,7 +93,7 @@ const PostList = (props) => {
       return res;
     });
 
-    props.updateReduxPosts(newPosts)
+    props.setReduxPosts(newPosts)
 
     setPostsConfig({
       ...postsConfig,
@@ -121,14 +105,14 @@ const PostList = (props) => {
   };
 
   const deletePost = async () => {
-    fbService
+    fbService.postsService
       .deletePost(postsConfig.postId, 0, postsConfig.totalItem)
       .then((data) => {
-        props.deleteReduxPosts(data)
+        props.setReduxPosts(data)
+        props.setReduxPostsHesMore(data.length < postsConfig.totalItem ? false : true)
         setPostsConfig({
           ...postsConfig,
           postId: null,
-          hesMore: data.length <= postsConfig.totalItem ? false : true,
           isOpenRemoveModal: false,
         });
       });
@@ -145,21 +129,24 @@ const PostList = (props) => {
   };
 
   const getMore = () => {
-    const newStartAt = postsConfig.startAt + endAt + 1;
-    const newEndAt = newStartAt + endAt;
+    const newStartAt = props.startAt + endAt;
+    const newEndAt = newStartAt + endAt - 1;
 
+    console.log(newStartAt, newEndAt);
+
+    props.setReduxPostsStartAt(newStartAt)
+    props.setReduxPostsEndAt(newEndAt)
     setPostsConfig({
       ...postsConfig,
       loading: true,
     });
 
-    fbService.getPosts(newStartAt, newEndAt).then((data) => {
+    fbService.postsService.getPosts(newStartAt, newEndAt).then((data) => {
       props.getReduxMorePosts(data)
+      props.setReduxPostsHesMore(data.length < endAt ? false : true)
       setPostsConfig({
         ...postsConfig,
-        hesMore: data.length <= newEndAt ? false : true,
         loading: false,
-        startAt: newStartAt,
         totalItem: newEndAt,
       });
     });
@@ -233,7 +220,7 @@ const PostList = (props) => {
                 );
               })}
             </tbody>
-            {postsConfig.hesMore && (
+            {props.hesMore && (
               <tfoot>
                 <tr>
                   <td colSpan="4">
@@ -243,7 +230,7 @@ const PostList = (props) => {
                           <div className="app-loader"></div>
                         </div>
                       )}
-                      {postsConfig.hesMore && !postsConfig.loading && (
+                      {props.hesMore && !postsConfig.loading && (
                         <Button className="btn-load-more" onClick={getMore}>
                           Get More
                         </Button>
@@ -292,37 +279,19 @@ const PostList = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    posts: state.posts
+    posts: state.posts.data,
+    postsTotalItems: state.posts.dataTotalItems,
+    hesMore: state.posts.hesMore,
+    startAt: state.posts.startAt
   }
 }
 
 const mapDispacheToProps = {
-
-  setReduxPosts: (posts) => ({
-    type: reduxActionTypes.SET_POSTS,
-    payload: {
-      posts,
-    }
-  }),
-  getReduxMorePosts: (posts) => ({
-    type: reduxActionTypes.GET_MORE_POSTS,
-    payload: {
-      posts,
-    }
-  }),
-  updateReduxPosts: (posts) => ({
-    type: reduxActionTypes.UPDATE_POST,
-    payload: {
-      posts,
-    }
-  }),
-  deleteReduxPosts: (posts) => ({
-    type: reduxActionTypes.DELETE_POST,
-    payload: {
-      posts,
-    }
-  }),
-
+  setReduxPosts,
+  setReduxPostsStartAt,
+  setReduxPostsHesMore,
+  getReduxMorePosts,
+  setReduxPostsEndAt,
 }
 
 export default connect(mapStateToProps, mapDispacheToProps)(PostList);

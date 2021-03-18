@@ -15,7 +15,6 @@ const Users = () => {
 
   const crateUser = () => {
     singup.current.handleSingup();
-    console.log(singup.current);
     setTimeout(() => {
       if (!singup.current.errorState.error) {
         createModal.current.closeModal();
@@ -23,7 +22,6 @@ const Users = () => {
     }, 3000);
   };
 
-  console.log(singup.current);
   return (
     <div className="app-admin-users">
       <div className="app-admin-users__title">Users list</div>
