@@ -4,6 +4,7 @@ import firebaseConfig from "./firebaseConfig";
 
 import userService from './userService';
 import postsService from './postsService';
+import todosService from './todosService'
 
 
 if (firebase.apps.length === 0) {
@@ -12,7 +13,8 @@ if (firebase.apps.length === 0) {
 
 const fbService = {
   userService,
-  postsService
+  postsService,
+  todosService,
 }
 
 export default fbService;

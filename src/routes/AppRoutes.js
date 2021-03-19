@@ -17,6 +17,7 @@ import Todos from "containers/Main/Pages/Todos/Todos";
 import Admin from "containers/Admin/Admin";
 import Dashboard from "containers/Admin/Pages/Dashboard/Dashboard";
 import AdminPosts from "containers/Admin/Pages/Posts/Posts";
+import AdminTodos from "containers/Admin/Pages/Todos/Todos";
 import Users from "containers/Admin/Pages/Users/Users";
 
 
@@ -27,13 +28,14 @@ const AppRoutes = (props) => {
       <Switch>
         <Route
           exact
-          path={["/admin", "/admin/posts", "/admin/users"]}
+          path={["/admin*"]}
           render={(props) =>
             logdin ? (
               <Admin {...props}>
                 <Switch>
                   <Route exact path="/admin" component={Dashboard} />
                   <Route exect path="/admin/posts" component={AdminPosts} />
+                  <Route exect path="/admin/todos" component={AdminTodos} />
                   <Route exect path="/admin/users" component={Users} />
                 </Switch>
               </Admin>

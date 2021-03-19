@@ -22,7 +22,7 @@ const Header = (props) => {
   };
 
   const logout = async () => {
-    await fbService.logout();
+    await fbService.userService.logout();
     props.removeReduxUser()
     localStorage.removeItem('user')
   };

@@ -1,0 +1,16 @@
+.todos-edite-modal {
+    .modal-completed-switch {
+        .MuiSwitch-colorPrimary {
+            color: #f50057;
+            &.Mui-checked {
+                color: #4caf50;
+                & + .MuiSwitch-track {
+                    background-color: #4caf50;
+                }
+            }
+        }
+        .MuiSwitch-track {
+            background-color: #f50057;
+        }
+    }
+}

@@ -13,7 +13,7 @@ export class PostDetails extends Component {
   }
 
   componentDidMount() {
-    fbService.getPost(this.props.match.params.postId).then((data) => {
+    fbService.postsService.getPost(this.props.match.params.postId).then((data) => {
       this.setState({
         data: data,
       });

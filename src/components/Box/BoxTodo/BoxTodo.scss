@@ -1,21 +1,37 @@
 @import "~styles/all";
 .box-todo {
-    width: 100%;
-    height: 100%;
-    text-align: center;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   .box__title {
-    font-size: 24px;
-    line-height: 30px;
-    line-height: bold;
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: bold;
     color: $primary-color;
     text-transform: uppercase;
-    margin-bottom: 5px;
-
   }
 
-  .box__desc {
-    font-size: 18px;
-    line-height: 22px;
-    color: $text-color;
+  .box__completed {
+    margin-left: 20px;
+
+    &-no {
+      svg {
+        color: #dc004e;
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    &-yes {
+      svg {
+        color: #4caf50;
+        width: 40px;
+        height: 40px;
+      }
+    }
   }
 }

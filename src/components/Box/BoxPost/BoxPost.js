@@ -17,8 +17,7 @@ const BoxPost = ({data , className}) => {
 
 BoxPost.propTypes = {
     className: PropTypes.string,
-    title: PropTypes.string,
-    body: PropTypes.string,
+    data: PropTypes.object,
 }
 
 export default BoxPost

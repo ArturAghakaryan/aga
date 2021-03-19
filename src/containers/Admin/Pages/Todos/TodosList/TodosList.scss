@@ -1,13 +1,31 @@
-.posts-table {
+.todos-table {
     .dark-table__header {
         &-number {
             width: 60px;
         }
-        &-name {
-            width: 30%;
+        &-completed {
+            width: 120px;
         }
         &-action {
             width: 80px;
+        }
+    }
+
+    .dark-table__body-completed {
+        text-align: center;
+        &-switch {
+            .MuiSwitch-colorPrimary {
+                color: #f50057;
+                &.Mui-checked {
+                    color: #4caf50;
+                    & + .MuiSwitch-track {
+                        background-color: #4caf50;
+                    }
+                }
+            }
+            .MuiSwitch-track {
+                background-color: #f50057;
+            }
         }
     }
 
