@@ -2,6 +2,7 @@ import React from "react";
 
 import BoxPost from "./BoxPost/BoxPost";
 import BoxStandart from "./BoxStandart/BoxStandart";
+import BoxTodo from "./BoxTodo/BoxTodo";
 
 import "./Box.scss"
 
@@ -15,7 +16,7 @@ const Box = ({ box, data = {}, className = "" }) => {
     case boxItem.post:
       return <BoxPost data={data} className={className} />;
     case boxItem.todo:
-      return <BoxPost data={data} className={className} />;
+      return <BoxTodo data={data} className={className} />;
     default:
       return <BoxStandart data={data} className={className} />;
   }

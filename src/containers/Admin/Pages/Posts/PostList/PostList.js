@@ -16,7 +16,7 @@ import { setReduxPosts, setReduxPostsHesMore, setReduxPostsStartAt, setReduxPost
 
 import "./PostList.scss";
 
-const endAt = 2;
+const endAt = 9;
 
 const PostList = (props) => {
   const [postsConfig, setPostsConfig] = useState({
@@ -132,8 +132,6 @@ const PostList = (props) => {
     const newStartAt = props.startAt + endAt;
     const newEndAt = newStartAt + endAt - 1;
 
-    console.log(newStartAt, newEndAt);
-
     props.setReduxPostsStartAt(newStartAt)
     props.setReduxPostsEndAt(newEndAt)
     setPostsConfig({
@@ -163,7 +161,7 @@ const PostList = (props) => {
 
   return (
     <>
-      <table className="dark-table">
+      <table className="dark-table posts-table">
         {props.posts.length === 0 ? (
           <tbody>
             <tr>

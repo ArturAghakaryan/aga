@@ -1,6 +1,6 @@
 import React from "react";
-
 import PropTypes from "prop-types";
+import Switch from '@material-ui/core/Switch';
 
 import "./Field.scss";
 
@@ -10,10 +10,11 @@ const Field = ({
   type = "text",
   id = null,
   name = null,
-  value = '',
-  onChange = () => {},
+  value,
+  onChange = () => { },
   error = null,
   placeholder,
+  switchColor = "primary"
 }) => {
   const switchResult = () => {
     switch (type) {
@@ -27,6 +28,10 @@ const Field = ({
             value={value}
             onChange={onChange}
           />
+        );
+      case "switch":
+        return (
+          <Switch id={id} className="app-switch" checked={value} onChange={onChange} name={name} color={switchColor} />
         );
       default:
         return (
@@ -57,10 +62,11 @@ Field.protoTypes = {
   type: PropTypes.string,
   id: PropTypes.string,
   name: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.any,
   onChange: PropTypes.func,
   error: PropTypes.string,
   placeholder: PropTypes.string,
+  switchColor: PropTypes.string
 };
 
 export default Field;

@@ -11,8 +11,6 @@ class PostsService {
       };
     
       getPosts = async (startAt, endAt) => {
-        console.log(startAt);
-        console.log(endAt);
         const res = await firebase
           .database()
           .ref("posts")

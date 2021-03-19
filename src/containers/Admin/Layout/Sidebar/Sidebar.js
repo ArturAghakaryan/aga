@@ -9,6 +9,17 @@ import NavLink from "components/NavLink/NavLink";
 import "./Sidebar.scss";
 import Button from "components/Button/Button";
 
+const Pages = [
+  {
+    to: "/admin/posts",
+    title: "Posts"
+  },
+  {
+    to: "/admin/todos",
+    title: "Todos"
+  }
+]
+
 const Sidebar = () => {
   const [openCloapse, setOpenCloapse] = useState({
     settings: [
@@ -36,11 +47,10 @@ const Sidebar = () => {
         <ul className="app-admin-sidebar__nav-lsit">
           <li className="app-admin-sidebar__nav-item">
             <Button
-              className={`app-admin-sidebar__nav-link ${
-                openCloapse.settings.find((item) => item.id === 1).open
-                  ? "is-active"
-                  : ""
-              }`}
+              className={`app-admin-sidebar__nav-link ${openCloapse.settings.find((item) => item.id === 1).open
+                ? "is-active"
+                : ""
+                }`}
               onClick={(e) => {
                 handleOpenCloapseClick(1);
               }}
@@ -54,29 +64,28 @@ const Sidebar = () => {
               </span>
             </Button>
             <ul
-              className={`app-admin-sidebar__nav-lsit first-level ${
-                !openCloapse.settings.find((item) => item.id === 1).open
-                  ? "expanded"
-                  : "collapsed"
-              }`}
+              className={`app-admin-sidebar__nav-lsit first-level ${!openCloapse.settings.find((item) => item.id === 1).open
+                ? "expanded"
+                : "collapsed"
+                }`}
             >
-              <li className="app-admin-sidebar__nav-item">
-                <NavLink
-                  to="/admin/posts"
-                  className="app-admin-sidebar__nav-link"
-                >
-                  Posts
-                </NavLink>
-              </li>
+              {Pages.map((el, index) => {
+                return (
+                  <li key={index} className="app-admin-sidebar__nav-item" >
+                    <NavLink to={el.to} className="app-admin-sidebar__nav-link">
+                      {el.title}
+                    </NavLink>
+                  </li>
+                )
+              })}
             </ul>
           </li>
           <li className="app-admin-sidebar__nav-item">
             <Button
-              className={`app-admin-sidebar__nav-link ${
-                openCloapse.settings.find((item) => item.id === 2).open
-                  ? "is-active"
-                  : ""
-              }`}
+              className={`app-admin-sidebar__nav-link ${openCloapse.settings.find((item) => item.id === 2).open
+                ? "is-active"
+                : ""
+                }`}
               onClick={(e) => {
                 handleOpenCloapseClick(2);
               }}
@@ -90,11 +99,10 @@ const Sidebar = () => {
               </span>
             </Button>
             <ul
-              className={`app-admin-sidebar__nav-lsit first-level ${
-                !openCloapse.settings.find((item) => item.id === 2).open
-                  ? "expanded"
-                  : "collapsed"
-              }`}
+              className={`app-admin-sidebar__nav-lsit first-level ${!openCloapse.settings.find((item) => item.id === 2).open
+                ? "expanded"
+                : "collapsed"
+                }`}
             >
               <li className="app-admin-sidebar__nav-item">
                 <NavLink
@@ -108,7 +116,7 @@ const Sidebar = () => {
           </li>
         </ul>
       </div>
-    </div>
+    </div >
   );
 };
 
