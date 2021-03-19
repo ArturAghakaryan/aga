@@ -21,6 +21,13 @@ const Header = (props) => {
     })
   };
 
+  const closeLogoutModal = () => {
+    setHeaderConfig({
+      ...headerConfig,
+      isOpenLogoutModal: false,
+    })
+  };
+
   const logout = async () => {
     await fbService.userService.logout();
     props.removeReduxUser()
@@ -40,7 +47,8 @@ const Header = (props) => {
         modalTitle="Log out"
         className="dark-modal logout-modal"
         action={logout}
-        actionButtonTitle="yes"
+        actionButtonTitle="yes"mapDispacheToProps
+        onClose={closeLogoutModal}
         showTopCloseButton={false}
         showBottomCloseButonnTitle="No"
       >
