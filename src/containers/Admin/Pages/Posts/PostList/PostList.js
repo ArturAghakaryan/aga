@@ -32,10 +32,9 @@ const PostList = (props) => {
 
   useEffect(() => {
     if (!props.posts) {
-      fbService.postsService.getPosts(postsConfig.startAt, endAt).then((data) => {
-        props.setReduxPosts(data)
+      props.setReduxPosts(postsConfig.startAt, endAt).then(() => {
         props.setReduxPostsEndAt(endAt)
-      });
+      })
     }
     fbService.postsService.getAllPosts().then((data) => {
       props.setReduxPostsHesMore(data.length > ((props.posts && props.posts.length) || endAt) ? true : false)
@@ -134,20 +133,19 @@ const PostList = (props) => {
 
     props.setReduxPostsStartAt(newStartAt)
     props.setReduxPostsEndAt(newEndAt)
+    
     setPostsConfig({
       ...postsConfig,
       loading: true,
     });
 
-    fbService.postsService.getPosts(newStartAt, newEndAt).then((data) => {
-      props.getReduxMorePosts(data)
-      props.setReduxPostsHesMore(data.length < endAt ? false : true)
+    props.getReduxMorePosts(newStartAt, newEndAt, endAt).then(()=>{
       setPostsConfig({
         ...postsConfig,
         loading: false,
         totalItem: newEndAt,
       });
-    });
+    })
   };
 
   if (!props.posts) {
@@ -174,10 +172,10 @@ const PostList = (props) => {
           <>
             <thead>
               <tr className="dark-table__header">
-                <th className="dark-table__header-number">No</th>
-                <th className="dark-table__header-name">Name</th>
-                <th className="dark-table__header-desc">Description</th>
-                <th className="dark-table__header-action">Action</th>
+                <th className="dark-table__header--number">No</th>
+                <th className="dark-table__header--name">Name</th>
+                <th className="dark-table__header--desc">Description</th>
+                <th className="dark-table__header--action">Action</th>
               </tr>
             </thead>
             <tbody>

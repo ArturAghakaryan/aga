@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from "react-redux"
+import { toast } from 'react-toastify'
 
 import Button from "components/Button/Button"
 import TodosList from "./TodosList/TodosList"
@@ -9,8 +10,6 @@ import fbService from 'api/fbService'
 import { crateReduxTodos, setReduxTodosHasMore } from 'actions/todosActions'
 
 import './Todos.scss'
-import { toast } from 'react-toastify'
-
 
 const Todos = (props) => {
 
@@ -42,7 +41,7 @@ const Todos = (props) => {
             if (props.todos.length < props.endAt) {
                 props.crateReduxTodos(data)
             }
-            toast.success(`Todo create`);
+            toast.success(`Todo has been created.`);
         })
 
         await fbService.todosService.getAllTodos().then((data) => {

@@ -4,12 +4,12 @@ import PagesIcon from "@material-ui/icons/Pages";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import UsersGroupIcon from "@material-ui/icons/Group";
 
+import Button from "components/Button/Button";
 import NavLink from "components/NavLink/NavLink";
 
 import "./Sidebar.scss";
-import Button from "components/Button/Button";
 
-const Pages = [
+const adminPages = [
   {
     to: "/admin/posts",
     title: "Posts"
@@ -21,17 +21,17 @@ const Pages = [
 ]
 
 const Sidebar = () => {
-  const [openCloapse, setOpenCloapse] = useState({
+  const [openCollapse, setOpenCollapse] = useState({
     settings: [
       { id: 1, open: false },
       { id: 2, open: false },
     ],
   });
 
-  const handleOpenCloapseClick = (id) => {
-    setOpenCloapse({
-      ...openCloapse,
-      settings: openCloapse.settings.map((item) =>
+  const handleOpenCollapseClick = (id) => {
+    setOpenCollapse({
+      ...openCollapse,
+      settings: openCollapse.settings.map((item) =>
         item.id === id
           ? { ...item, open: !item.open }
           : { ...item, open: false }
@@ -44,15 +44,15 @@ const Sidebar = () => {
       <div className="app-admin-sidebar__user"></div>
 
       <div className="app-admin-sidebar__nav">
-        <ul className="app-admin-sidebar__nav-lsit">
+        <ul className="app-admin-sidebar__nav-list">
           <li className="app-admin-sidebar__nav-item">
             <Button
-              className={`app-admin-sidebar__nav-link ${openCloapse.settings.find((item) => item.id === 1).open
+              className={`app-admin-sidebar__nav-link ${openCollapse.settings.find((item) => item.id === 1).open
                 ? "is-active"
                 : ""
                 }`}
               onClick={(e) => {
-                handleOpenCloapseClick(1);
+                handleOpenCollapseClick(1);
               }}
             >
               <span className="icon-nav">
@@ -64,12 +64,12 @@ const Sidebar = () => {
               </span>
             </Button>
             <ul
-              className={`app-admin-sidebar__nav-lsit first-level ${!openCloapse.settings.find((item) => item.id === 1).open
+              className={`app-admin-sidebar__nav-list first-level ${!openCollapse.settings.find((item) => item.id === 1).open
                 ? "expanded"
                 : "collapsed"
                 }`}
             >
-              {Pages.map((el, index) => {
+              {adminPages.map((el, index) => {
                 return (
                   <li key={index} className="app-admin-sidebar__nav-item" >
                     <NavLink to={el.to} className="app-admin-sidebar__nav-link">
@@ -82,12 +82,12 @@ const Sidebar = () => {
           </li>
           <li className="app-admin-sidebar__nav-item">
             <Button
-              className={`app-admin-sidebar__nav-link ${openCloapse.settings.find((item) => item.id === 2).open
+              className={`app-admin-sidebar__nav-link ${openCollapse.settings.find((item) => item.id === 2).open
                 ? "is-active"
                 : ""
                 }`}
               onClick={(e) => {
-                handleOpenCloapseClick(2);
+                handleOpenCollapseClick(2);
               }}
             >
               <span className="icon-nav">
@@ -99,7 +99,7 @@ const Sidebar = () => {
               </span>
             </Button>
             <ul
-              className={`app-admin-sidebar__nav-lsit first-level ${!openCloapse.settings.find((item) => item.id === 2).open
+              className={`app-admin-sidebar__nav-list first-level ${!openCollapse.settings.find((item) => item.id === 2).open
                 ? "expanded"
                 : "collapsed"
                 }`}

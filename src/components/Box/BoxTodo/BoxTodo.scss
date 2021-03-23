@@ -1,4 +1,5 @@
 @import "~styles/all";
+
 .box-todo {
   width: 100%;
   height: 100%;
@@ -15,10 +16,10 @@
     text-transform: uppercase;
   }
 
-  .box__completed {
+  .box__completed-content {
     margin-left: 20px;
 
-    &-no {
+    .box__not-completed {
       svg {
         color: #dc004e;
         width: 40px;
@@ -26,7 +27,7 @@
       }
     }
 
-    &-yes {
+    .box__completed {
       svg {
         color: #4caf50;
         width: 40px;

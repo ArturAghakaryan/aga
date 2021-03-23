@@ -21,9 +21,7 @@ export class Posts extends Component {
 
   componentDidMount() {
     if (!this.props.posts) {
-      fbService.postsService.getPosts(this.props.startAt, endAt).then((data) => {
-        this.props.setReduxPosts(data)
-      });
+      this.props.setReduxPosts(this.props.startAt, endAt)
     }
     fbService.postsService.getAllPosts().then((data) => {
       this.props.setReduxPostsHesMore(data.length > this.props.posts.length ? true : false)
@@ -40,13 +38,11 @@ export class Posts extends Component {
 
     this.props.setReduxPostsStartAt(newStartAt)
 
-    fbService.postsService.getPosts(newStartAt, newEndAt).then((data) => {
-      this.props.getReduxMorePosts(data)
-      this.props.setReduxPostsHesMore(data.length < endAt ? false : true)
+    this.props.getReduxMorePosts(newStartAt, newEndAt, endAt).then(() => {
       this.setState({
         loading: false,
       });
-    });
+    })
   };
 
   render() {

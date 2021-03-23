@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react'
 import { connect } from "react-redux"
+import { toast } from 'react-toastify';
 
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
 import fbService from 'api/fbService';
+import TodosModal from 'components/TodosModal/TodosModal';
+import Modal from 'components/Modal/Modal';
 import { setReduxTodos, setReduxTodosHasMore, setReduxTodosStartAt, setReduxTodosEndAt, setReduxTodosGetMore } from 'actions/todosActions'
 
 import Button from "components/Button/Button"
 
 import './TodosList.scss'
-import TodosModal from 'components/TodosModal/TodosModal';
-import { toast } from 'react-toastify';
-import Modal from 'components/Modal/Modal';
 
 const endAt = 8;
 
@@ -134,7 +134,6 @@ const TodosList = (props) => {
                 isOpenRemoveModal: false
             })
         })
-        console.log(props.endAt);
         await toast.success(`Todo deleded`);
     }
 
@@ -171,8 +170,6 @@ const TodosList = (props) => {
         });
     };
 
-    console.log(todosConfig);
-
     if (!props.todos) {
         return (
             <div className="app-loader-container">
@@ -207,7 +204,7 @@ const TodosList = (props) => {
                                     <td>{el.id}</td>
                                     <td>{el.title}</td>
                                     <td className="dark-table__body-completed">
-                                        <Switch className="dark-table__body-completed-switch" checked={el.completed} onChange={(e) => { handleSwitchChange(e, el) }} name={`checked-${el.id}`} color="primary" />
+                                        <Switch className="dark-table__body-completed-switch" checked={el.completed} onChange={(e) => { handleSwitchChange(e, el) }} name={`checked-${el.id}`} color="primary" classes={{ root: "app-switch-contnet", colorPrimary: `app-switch is-primary`, checked: "is-checked" ,track:"app-switch-track"}} />
                                     </td>
                                     <td>
                                         <div className="table-buttons">

@@ -7,7 +7,7 @@ import Field from "components/Field/Field";
 import './TodosModal.scss'
 
 const TodosModal = ({
-    modalTitle = null,
+    modalTitle = '',
     className = "",
     titleValue,
     completedValue,
@@ -46,13 +46,11 @@ const TodosModal = ({
                 onChange={changeValue}
                 switchColor="primary"
             />
-            {/* <Switch className="modal-completed-switch" checked={completedValue} onChange={changeValue} name="completedValue" color="primary" /> */}
         </Modal>
     )
 }
 
 TodosModal.propTypes = {
-    isModalOpen: PropTypes.bool,
     modalTitle: PropTypes.string,
     className: PropTypes.string,
     buttonTitle: PropTypes.string.isRequired,
