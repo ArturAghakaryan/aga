@@ -16,7 +16,7 @@ const initialState = {
     },
     posts: {
         data: null,
-        hesMore: false,
+        hasMore: false,
         startAt: 1,
         endAt: null
     },

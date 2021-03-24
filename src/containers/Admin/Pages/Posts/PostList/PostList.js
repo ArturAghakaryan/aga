@@ -12,7 +12,7 @@ import Modal from "components/Modal/Modal";
 import PostModal from "components/PostModal/PostModal";
 import Link from "components/Link/Link";
 
-import { setReduxPosts, setReduxPostsHesMore, setReduxPostsStartAt, setReduxPostsEndAt, getReduxMorePosts } from 'actions/postsActions'
+import { setReduxPosts, setReduxPostsHasMore, setReduxDeletePosts, setReduxUpdatePosts, setReduxPostsStartAt, setReduxPostsEndAt, getReduxMorePosts } from 'actions/postsActions'
 
 import "./PostList.scss";
 
@@ -37,7 +37,7 @@ const PostList = (props) => {
       })
     }
     fbService.postsService.getAllPosts().then((data) => {
-      props.setReduxPostsHesMore(data.length > ((props.posts && props.posts.length) || endAt) ? true : false)
+      props.setReduxPostsHasMore(data.length > ((props.posts && props.posts.length) || endAt) ? true : false)
     });
   }, []);
 
@@ -92,7 +92,7 @@ const PostList = (props) => {
       return res;
     });
 
-    props.setReduxPosts(newPosts)
+    props.setReduxUpdatePosts(newPosts)
 
     setPostsConfig({
       ...postsConfig,
@@ -107,8 +107,8 @@ const PostList = (props) => {
     fbService.postsService
       .deletePost(postsConfig.postId, 0, postsConfig.totalItem)
       .then((data) => {
-        props.setReduxPosts(data)
-        props.setReduxPostsHesMore(data.length < postsConfig.totalItem ? false : true)
+        props.setReduxDeletePosts(data)
+        props.setReduxPostsHasMore(data.length < postsConfig.totalItem ? false : true)
         setPostsConfig({
           ...postsConfig,
           postId: null,
@@ -133,13 +133,13 @@ const PostList = (props) => {
 
     props.setReduxPostsStartAt(newStartAt)
     props.setReduxPostsEndAt(newEndAt)
-    
+
     setPostsConfig({
       ...postsConfig,
       loading: true,
     });
 
-    props.getReduxMorePosts(newStartAt, newEndAt, endAt).then(()=>{
+    props.getReduxMorePosts(newStartAt, newEndAt, endAt).then(() => {
       setPostsConfig({
         ...postsConfig,
         loading: false,
@@ -216,7 +216,7 @@ const PostList = (props) => {
                 );
               })}
             </tbody>
-            {props.hesMore && (
+            {props.hasMore && (
               <tfoot>
                 <tr>
                   <td colSpan="4">
@@ -226,7 +226,7 @@ const PostList = (props) => {
                           <div className="app-loader"></div>
                         </div>
                       )}
-                      {props.hesMore && !postsConfig.loading && (
+                      {props.hasMore && !postsConfig.loading && (
                         <Button className="btn-load-more" onClick={getMore}>
                           Get More
                         </Button>
@@ -277,15 +277,17 @@ const mapStateToProps = (state) => {
   return {
     posts: state.posts.data,
     postsTotalItems: state.posts.dataTotalItems,
-    hesMore: state.posts.hesMore,
+    hasMore: state.posts.hasMore,
     startAt: state.posts.startAt
   }
 }
 
 const mapDispacheToProps = {
   setReduxPosts,
+  setReduxDeletePosts,
+  setReduxUpdatePosts,
   setReduxPostsStartAt,
-  setReduxPostsHesMore,
+  setReduxPostsHasMore,
   getReduxMorePosts,
   setReduxPostsEndAt,
 }
