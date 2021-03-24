@@ -10,7 +10,7 @@ const Field = ({
   type = "text",
   id = null,
   name = null,
-  value,
+  value = '',
   onChange = () => { },
   error = null,
   placeholder,
@@ -31,7 +31,7 @@ const Field = ({
         );
       case "switch":
         return (
-          <Switch id={id} className="app-switch" checked={value} onChange={onChange} name={name} color={switchColor} />
+          <Switch id={id} checked={value} onChange={onChange} name={name} color={switchColor} classes={{ root: "app-switch-contnet", colorPrimary: `app-switch is-${switchColor}`, checked: "is-checked" ,track:"app-switch-track"}} />
         );
       default:
         return (

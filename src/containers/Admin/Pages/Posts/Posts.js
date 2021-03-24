@@ -7,7 +7,7 @@ import PostList from "./PostList/PostList";
 import PostModal from "components/PostModal/PostModal";
 import fbService from "api/fbService";
 
-import { crateReduxPosts, setReduxPostsHesMore } from "actions/postsActions";
+import { createReduxPosts, setReduxPostsHasMore } from "actions/postsActions";
 
 import "./Posts.scss";
 
@@ -40,13 +40,13 @@ const Posts = (props) => {
       })
       .then((data) => {
         if (props.posts.length < props.endAt) {
-          props.crateReduxPosts(data)
+          props.createReduxPosts(data)
         }
         toast.success(`Post create`);
       });
 
     await fbService.postsService.getAllPosts().then((data) => {
-      props.setReduxPostsHesMore(data.length >= props.endAt ? true : false)
+      props.setReduxPostsHasMore(data.length >= props.endAt ? true : false)
     });
 
     setPostsConfig({
@@ -99,8 +99,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispacheToProps = {
-  crateReduxPosts,
-  setReduxPostsHesMore
+  createReduxPosts,
+  setReduxPostsHasMore
 }
 
 export default connect(mapStateToProps, mapDispacheToProps)(Posts);

@@ -9,13 +9,13 @@ const BoxTodo = ({ data, className }) => {
     return (
         <div className={`box box-todo ${className}`}>
             <h3 className="box__title">{data.title}</h3>
-            <div className="box__completed">
+            <div className="box__completed-content">
                 {data.completed ? (
-                    <span className="box__completed-yes">
+                    <span className="box__completed">
                         <CheckCircleIcon />
                     </span>
                 ) : (
-                    <span className="box__completed-no">
+                    <span className="box__not-completed">
                         <CancelIcon />
                     </span>
                 )}
@@ -26,7 +26,7 @@ const BoxTodo = ({ data, className }) => {
 
 BoxTodo.propTypes = {
     className: PropTypes.string,
-    data: PropTypes.object,
+    data: PropTypes.any,
 }
 
 export default BoxTodo

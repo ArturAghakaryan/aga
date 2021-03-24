@@ -14,16 +14,16 @@
     .dark-table__body-completed {
         text-align: center;
         &-switch {
-            .MuiSwitch-colorPrimary {
+            .app-switch.is-primary {
                 color: #f50057;
-                &.Mui-checked {
+                &.is-checked {
                     color: #4caf50;
-                    & + .MuiSwitch-track {
+                    & + .app-switch-track {
                         background-color: #4caf50;
                     }
                 }
             }
-            .MuiSwitch-track {
+            .app-switch-track {
                 background-color: #f50057;
             }
         }

@@ -42,7 +42,6 @@ class todosService {
             id: id + 1,
         };
 
-        
         await firebase
             .database()
             .ref(`todos/${id + 1}`)
@@ -69,8 +68,8 @@ class todosService {
 
         const allTodos = await this.getAllTodos()
         const newTodos = {};
-        console.log(allTodos);
-        Object.values(allTodos).forEach(
+
+        Object.values(allTodos).map(
             (value, index) => (newTodos[index + 1] = { ...value, id: index + 1 })
         );
 

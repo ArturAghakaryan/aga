@@ -2,7 +2,7 @@ import { reduxActionTypes } from './reduxActionTypes'
 
 const initialState = {
     data: null,
-    hesMore: false,
+    hasMore: false,
     startAt: 1,
     endAt: null
 }
@@ -18,7 +18,7 @@ const postReducer = (state = initialState, action) => {
         case reduxActionTypes.SET_POSTS_HASE_MORE:
             return {
                 ...state,
-                hesMore: action.payload.hesMore
+                hasMore: action.payload.hasMore
             };
         case reduxActionTypes.SET_POSTS_STARTAT:
             return {
@@ -39,6 +39,16 @@ const postReducer = (state = initialState, action) => {
             return {
                 ...state,
                 data: [...state.data, action.payload.posts]
+            };
+        case reduxActionTypes.DELETE_POSTS:
+            return {
+                ...state,
+                data: action.payload.posts
+            };
+        case reduxActionTypes.UPDATE_POSTS:
+            return {
+                ...state,
+                data: action.payload.posts
             };
         default:
             return state;

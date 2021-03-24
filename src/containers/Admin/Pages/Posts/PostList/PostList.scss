@@ -1,12 +1,12 @@
 .posts-table {
     .dark-table__header {
-        &-number {
+        &--number {
             width: 60px;
         }
-        &-name {
+        &--name {
             width: 30%;
         }
-        &-action {
+        &--action {
             width: 80px;
         }
     }

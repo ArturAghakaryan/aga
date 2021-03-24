@@ -5,7 +5,7 @@ import Button from "components/Button/Button";
 import Box from "components/Box/Box";
 import fbService from "api/fbService";
 
-import { setReduxPosts, setReduxPostsHesMore, setReduxPostsStartAt, getReduxMorePosts } from 'actions/postsActions'
+import { setReduxPosts, setReduxPostsHasMore, setReduxPostsStartAt, getReduxMorePosts } from 'actions/postsActions'
 
 import "./Posts.scss";
 
@@ -21,12 +21,10 @@ export class Posts extends Component {
 
   componentDidMount() {
     if (!this.props.posts) {
-      fbService.postsService.getPosts(this.props.startAt, endAt).then((data) => {
-        this.props.setReduxPosts(data)
-      });
+      this.props.setReduxPosts(this.props.startAt, endAt)
     }
     fbService.postsService.getAllPosts().then((data) => {
-      this.props.setReduxPostsHesMore(data.length > this.props.posts.length ? true : false)
+      this.props.setReduxPostsHasMore(data.length > this.props.posts.length ? true : false)
     });
   }
 
@@ -40,18 +38,16 @@ export class Posts extends Component {
 
     this.props.setReduxPostsStartAt(newStartAt)
 
-    fbService.postsService.getPosts(newStartAt, newEndAt).then((data) => {
-      this.props.getReduxMorePosts(data)
-      this.props.setReduxPostsHesMore(data.length < endAt ? false : true)
+    this.props.getReduxMorePosts(newStartAt, newEndAt, endAt).then(() => {
       this.setState({
         loading: false,
       });
-    });
+    })
   };
 
   render() {
     const { loading } = this.state;
-    const { posts, hesMore } = this.props
+    const { posts, hasMore } = this.props
     if (!posts) {
       return (
         <div className="container">
@@ -93,7 +89,7 @@ export class Posts extends Component {
                 <div className="app-loader"></div>
               </div>
             )}
-            {hesMore && !loading && (
+            {hasMore && !loading && (
               <Button
                 className="is-primary btn-load-more"
                 onClick={this.getMore}
@@ -112,7 +108,7 @@ const mapStateToProps = (state) => {
   return {
     posts: state.posts.data,
     postsTotalItems: state.posts.dataTotalItems,
-    hesMore: state.posts.hesMore,
+    hasMore: state.posts.hasMore,
     startAt: state.posts.startAt
   }
 }
@@ -120,7 +116,7 @@ const mapStateToProps = (state) => {
 const mapDispacheToProps = {
   setReduxPosts,
   setReduxPostsStartAt,
-  setReduxPostsHesMore,
+  setReduxPostsHasMore,
   getReduxMorePosts,
 }
 
